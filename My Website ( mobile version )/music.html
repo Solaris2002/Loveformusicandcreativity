@@ -1,0 +1,651 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#8B2FC9">
+    <title>Music – Love For Music and Creativity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --purple: oklch(0.592 0.249 0.584);
+            --dark-purple: oklch(0.38 0.2 0.584);
+            --rose: oklch(0.459 0.187 3.815);
+            --white: #fff;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--purple);
+            background-image:
+                radial-gradient(ellipse at 20% 10%, oklch(0.45 0.25 0.584) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 85%, oklch(0.38 0.18 3.815) 0%, transparent 50%);
+            min-height: 100vh;
+            font-family: 'Lora', Georgia, serif;
+            padding-bottom: 60px;
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            padding: clamp(24px, 6vw, 48px) 20px clamp(12px, 3vw, 24px);
+            text-align: center;
+        }
+
+        .site-header h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(26px, 6.5vw, 56px);
+            color: var(--white);
+            line-height: 1.15;
+            text-shadow: 0 2px 24px rgba(0,0,0,0.3);
+        }
+
+        .site-header h2 {
+            font-family: 'Lora', Georgia, serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: clamp(13px, 3vw, 22px);
+            color: rgba(255,255,255,0.82);
+            margin-top: 8px;
+        }
+
+        /* ── NAV ── */
+        .topnav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+        }
+
+        .nav-toggle { display: none; }
+
+        .hamburger {
+            display: none;
+            width: 100%;
+            padding: 16px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: var(--purple);
+        }
+
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .hamburger-icon span {
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background: var(--purple);
+            border-radius: 2px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            display: block;
+            color: var(--purple);
+            text-align: center;
+            padding: 18px 16px;
+            text-decoration: none;
+            font-size: clamp(13px, 2vw, 18px);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:active {
+            background-color: var(--rose);
+            color: var(--white);
+        }
+
+        /* ── SEARCH ── */
+        .search-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: clamp(20px, 4vw, 36px) 16px clamp(12px, 3vw, 24px);
+            flex-wrap: wrap;
+        }
+
+        #searchInput {
+            flex: 1;
+            min-width: 0;
+            max-width: 340px;
+            padding: 12px 18px;
+            font-size: 16px;
+            font-family: 'Lora', serif;
+            border: 3px solid deeppink;
+            border-radius: 25px;
+            background: white;
+            color: black;
+            outline: none;
+            transition: box-shadow 0.2s;
+        }
+
+        #searchInput:focus {
+            box-shadow: 0 0 0 3px rgba(255,105,180,0.3);
+        }
+
+        #searchInput::placeholder { color: lightgrey; }
+
+        #searchBtn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            background: pink;
+            color: var(--purple);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, transform 0.1s;
+            touch-action: manipulation;
+            white-space: nowrap;
+        }
+
+        #searchBtn:hover,
+        #searchBtn:active {
+            background-color: var(--rose);
+            color: white;
+        }
+
+        #searchBtn:active { transform: scale(0.96); }
+
+        #noResult {
+            display: none;
+            text-align: center;
+            color: rgba(255,255,255,0.85);
+            font-style: italic;
+            font-size: 16px;
+            padding: 0 16px 16px;
+        }
+
+        /* ── PAGE TITLE ── */
+        .page-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(22px, 5vw, 40px);
+            color: var(--white);
+            padding: clamp(12px, 3vw, 24px) 16px 0;
+        }
+
+        /* ── VIDEO GRID ── */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(300px, 90vw), 1fr));
+            gap: clamp(28px, 5vw, 60px);
+            padding: clamp(24px, 5vw, 48px) clamp(12px, 4vw, 40px);
+            justify-items: center;
+        }
+
+        .music-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 580px;
+        }
+
+        /* Responsive iframe wrapper — preserves 16:9 ratio */
+        .video-wrap {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 28px rgba(0,0,0,0.35);
+        }
+
+        .video-wrap iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .music-item span {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(13px, 2.5vw, 20px);
+            color: white;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* ── SEARCH STATES ── */
+        .highlight {
+            background: #ffe066;
+            color: black;
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+
+        .matched {
+            outline: 4px solid white;
+            outline-offset: 5px;
+            border-radius: 10px;
+        }
+
+        .hidden-item { display: none; }
+
+        /* ── MOBILE HAMBURGER ── */
+        @media (max-width: 640px) {
+            .hamburger { display: flex; }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-toggle:checked ~ .nav-links { display: flex; }
+
+            .nav-toggle:checked ~ .hamburger .hamburger-icon span:nth-child(1) {
+                transform: translateY(7.5px) rotate(45deg);
+            }
+            .nav-toggle:checked ~ .hamburger .hamburger-icon span:nth-child(2) {
+                opacity: 0;
+            }
+            .nav-toggle:checked ~ .hamburger .hamburger-icon span:nth-child(3) {
+                transform: translateY(-7.5px) rotate(-45deg);
+            }
+
+            .nav-links a {
+                padding: 16px 24px;
+                border-top: 1px solid rgba(139,47,201,0.1);
+                text-align: left;
+                font-size: 17px;
+            }
+
+            /* Single column on small phones */
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── SAFE AREA (iPhone notch) ── */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <h1>Love For Music<br>and Creativity</h1>
+        <h2>Welcome everyone! Sharing my music memories.</h2>
+    </header>
+
+    <nav class="topnav">
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+        <label for="nav-toggle" class="hamburger" aria-label="Toggle navigation">
+            <span>Menu</span>
+            <span class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </label>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="images.html">Images</a>
+            <a href="music.html">Music</a>
+            <a href="performances.html">Performances</a>
+            <a href="footage.html">Footage</a>
+            <a href="other images.html">Other Images</a>
+        </div>
+    </nav>
+
+    <div class="search-area">
+        <input type="search" id="searchInput" placeholder="Search songs or artists..." autocomplete="off">
+        <button id="searchBtn">Search</button>
+    </div>
+    <p id="noResult">No matches found.</p>
+
+    <h2 class="page-title">Music</h2>
+
+    <div class="video-grid">
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/GHy75KNqMDQ?si=KUK8ZIX6UnCIp19B" title="Aaliyah - 4 Page Letter" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Aaliyah - 4 Page Letter (1997)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/bs29z1ANwqY?si=PYeun3ExYsKoI2q7" title="DOUBLE ft. Full Of Harmony - Handle" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>DOUBLE ft. Full Of Harmony - Handle (2000)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/yhCD9qxlczo?si=db_g81IPj49xbgZh" title="Lil' Kim ft. Sisqo - How Many Licks" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Lil' Kim ft. Sisqo - How Many Licks (2000)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/kl-gEopCI4U?si=pEuhGMLOU1Zxf4Iz" title="Left Eye - The Block Party" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Left Eye - The Block Party (2001)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/gQVU4mrRbeA?si=FEHeuMfAbyAhMtsX" title="Zeebra - Oh Yeah" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Zeebra - Oh Yeah (2005)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/0lctd37oJAs?si=p5c3KjIWT7xubbDI" title="Crystal Kay - Ex-Boyfriend" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Crystal Kay - Ex-Boyfriend (2001)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/T0Pn-Rm6ZFM?si=e0S1H7WvVNVzIeEH" title="SHINHWA - Wild Eyes" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>SHINHWA - Wild Eyes (2001)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/dMX-z86SSHY?si=kkcSAOK_gYKnGqgC" title="Mary J. Blige - Real Love" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Mary J. Blige - Real Love (1992)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/WzfLg2Bwk4I?si=LEVRF1xc1vEf3nXK" title="Mya ft. Sisqo - It's All About Me" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Mya ft. Sisqo - It's All About Me (1998)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/gUPrnu3BEU8?si=mrVLysoexgE107Dy" title="Ashanti - Foolish" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Ashanti - Foolish (2002)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/mR8i0fRVmSA?si=ouudGcjxDqcNhpPf" title="BoA - My Name" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>BoA - My Name (2004)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/DhaiMj7iIII?si=15skpivy5Rce_a0Z" title="Full Of Harmony - Typhoon" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Full Of Harmony - Typhoon (2000)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/evvXqGJk1T8?si=wZ1Dlf1hJSZ57KoK" title="Hikaru Utada - Time Limit" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Hikaru Utada - Time Limit (2000)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/OFlxQZNWNMU?si=gmUW54XgWNfC2cJj" title="god - Road" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>god - Road (2001)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/FrLequ6dUdM?si=t3pEuSzEmTWMW9BW" title="TLC - No Scrubs" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>TLC - No Scrubs (1999)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/AmEO4Qp2mFw?si=CE_03UiwjClldnKb" title="Blaque - 808" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Blaque - 808 (1999)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/502rtPpsQfg?si=yZAxf-oGR42T5FcU" title="Solè ft. Kandi and JT Money - 4, 5, 6" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Solè ft. Kandi and JT Money - 4, 5, 6 (1999)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/gvvKaZVP4r4?si=9_p8jwxY-4odPr1f" title="Koda Kumi - Shake It" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Koda Kumi - Shake It (2005)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/3NTpeK4j1_A?si=Mr_mJV3IGnIDjK6S" title="RAIN - Bad Man" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>RAIN - Bad Man (2002)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/2W0QV_G-7_w?si=BrXn0o0U0T3DPJAa" title="J.ae - Like Yesterday" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>J.ae - Like Yesterday (2000)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/ClmnYnUQUZo?si=KUBg0mH53HHVuJuS" title="Jon B. - I Do" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Jon B. - I Do (Whatcha Say Boo) (1997)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/YGcz_unHTTs?si=Wgkn52mzILszerF8" title="Olivia - Bizounce" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Olivia - Bizounce (2001)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/DHpUtOcwhyU?si=cxjlq9TgzzOYpmFl" title="Ginuwine - So Anxious" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Ginuwine - So Anxious (1999)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/g4tpuu-Up90?si=3VSdr0SZHK0FElZS" title="Michael Jackson - You Rock My World" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Michael Jackson - You Rock My World (2001)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/AKX3sY1aK9Q?si=tozcmA7kxIDVv6dM" title="Ann One - Memories" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Ann One - Memories (2002)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/H_WzjiTzZBA?si=NSw1niixid2KEgKH" title="D'Angelo - Brown Sugar" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>D'Angelo - Brown Sugar (1995)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/XgHINNzeWQ4?si=6s4miRmlh7G5YCPa" title="Debelah Morgan - Yesterday" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Debelah Morgan - Yesterday (1998)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/_kKiXD421Y0?si=lhnFb8nmBZUQtY6m" title="B2K - Uh Huh" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>B2K - Uh Huh (2001)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/zfqmg_J1j6k?si=ep5xRapNI3ZbSCDB" title="Gyrl - Get Your Groove On" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Gyrl - Get Your Groove On (1997)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/X2z6IYp8Vk4?si=AtKVmg3HZ3fQ8xym" title="Maxwell - Fortunate" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Maxwell - Fortunate (1999)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/k4d4paRy_gs?si=2f44ZwIXgCA7GBB8" title="Wheesung - With Me" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Wheesung - With Me</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/VYn_OsAuqKI?si=M6vnn8llW6d48mBE" title="Fly To The Sky - Condition Of My Heart" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Fly To The Sky - Condition Of My Heart (2002)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/CJ9TzwLZ8dc?si=qC5PcjeoRjxGr3Y_" title="HI-D ft. Zeebra - Girlfriends" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>HI-D ft. Zeebra - Girlfriends (2003)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/nf3EoSa7rco?si=4C--rSy782TC-LNw" title="HITOE - I Got You" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>HITOE - I Got You (2002)</span>
+        </div>
+
+    </div><!-- /video-grid -->
+
+    <script>
+        var input    = document.getElementById('searchInput');
+        var btn      = document.getElementById('searchBtn');
+        var noResult = document.getElementById('noResult');
+        var items    = document.querySelectorAll('.music-item');
+
+        function clearAll() {
+            items.forEach(function(item) {
+                item.classList.remove('matched', 'hidden-item');
+                item.querySelectorAll('.highlight').forEach(function(el) {
+                    el.replaceWith(document.createTextNode(el.textContent));
+                });
+                item.normalize();
+            });
+            noResult.style.display = 'none';
+        }
+
+        function highlightNode(node, term) {
+            if (node.nodeType !== 3) return;
+            var idx = node.textContent.toLowerCase().indexOf(term);
+            if (idx === -1) return;
+            var span = document.createElement('span');
+            span.className = 'highlight';
+            span.textContent = node.textContent.slice(idx, idx + term.length);
+            var after = node.splitText(idx);
+            after.textContent = after.textContent.slice(term.length);
+            node.parentNode.insertBefore(span, after);
+        }
+
+        function doSearch() {
+            clearAll();
+            var term = input.value.trim().toLowerCase();
+            if (!term) return;
+
+            var firstMatch = null;
+
+            items.forEach(function(item) {
+                var name = item.querySelector('span').textContent.toLowerCase();
+                if (name.includes(term)) {
+                    item.classList.add('matched');
+                    var walker = document.createTreeWalker(item, NodeFilter.SHOW_TEXT);
+                    var nodes = [];
+                    while (walker.nextNode()) nodes.push(walker.currentNode);
+                    nodes.forEach(function(n) { highlightNode(n, term); });
+                    if (!firstMatch) firstMatch = item;
+                } else {
+                    item.classList.add('hidden-item');
+                }
+            });
+
+            if (firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                noResult.style.display = 'block';
+                setTimeout(function() { noResult.style.display = 'none'; }, 2500);
+            }
+        }
+
+        btn.addEventListener('click', doSearch);
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') doSearch();
+        });
+        input.addEventListener('input', function() {
+            if (input.value.trim() === '') clearAll();
+        });
+    </script>
+
+</body>
+</html>

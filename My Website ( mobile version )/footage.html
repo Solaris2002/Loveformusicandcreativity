@@ -1,0 +1,586 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#8B2FC9">
+    <title>Footage – Love For Music and Creativity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --purple: oklch(0.592 0.249 0.584);
+            --rose: oklch(0.459 0.187 3.815);
+            --white: #fff;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--purple);
+            background-image:
+                radial-gradient(ellipse at 20% 10%, oklch(0.45 0.25 0.584) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 85%, oklch(0.38 0.18 3.815) 0%, transparent 50%);
+            min-height: 100vh;
+            font-family: 'Lora', Georgia, serif;
+            padding-bottom: 60px;
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            padding: clamp(24px, 6vw, 48px) 20px clamp(12px, 3vw, 24px);
+            text-align: center;
+        }
+
+        .site-header h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(26px, 6.5vw, 56px);
+            color: var(--white);
+            line-height: 1.15;
+            text-shadow: 0 2px 24px rgba(0,0,0,0.3);
+        }
+
+        .site-header h2 {
+            font-family: 'Lora', Georgia, serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: clamp(13px, 3vw, 22px);
+            color: rgba(255,255,255,0.82);
+            margin-top: 8px;
+        }
+
+        /* ── NAV ── */
+        .topnav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+        }
+
+        .nav-toggle { display: none; }
+
+        .hamburger {
+            display: none;
+            width: 100%;
+            padding: 16px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: var(--purple);
+        }
+
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .hamburger-icon span {
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background: var(--purple);
+            border-radius: 2px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            display: block;
+            color: var(--purple);
+            text-align: center;
+            padding: 18px 16px;
+            text-decoration: none;
+            font-size: clamp(13px, 2vw, 18px);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:active {
+            background-color: var(--rose);
+            color: var(--white);
+        }
+
+        /* ── SEARCH ── */
+        .search-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: clamp(20px, 4vw, 36px) 16px clamp(12px, 3vw, 24px);
+            flex-wrap: wrap;
+        }
+
+        #searchInput {
+            flex: 1;
+            min-width: 0;
+            max-width: 340px;
+            padding: 12px 18px;
+            font-size: 16px;
+            font-family: 'Lora', serif;
+            border: 3px solid deeppink;
+            border-radius: 25px;
+            background: white;
+            color: black;
+            outline: none;
+            transition: box-shadow 0.2s;
+        }
+
+        #searchInput:focus {
+            box-shadow: 0 0 0 3px rgba(255,105,180,0.3);
+        }
+
+        #searchInput::placeholder { color: lightgrey; }
+
+        #searchBtn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            background: pink;
+            color: var(--purple);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, transform 0.1s;
+            touch-action: manipulation;
+            white-space: nowrap;
+        }
+
+        #searchBtn:hover,
+        #searchBtn:active {
+            background-color: var(--rose);
+            color: white;
+        }
+
+        #searchBtn:active { transform: scale(0.96); }
+
+        #noResult {
+            display: none;
+            text-align: center;
+            color: rgba(255,255,255,0.85);
+            font-style: italic;
+            font-size: 16px;
+            padding: 0 16px 16px;
+        }
+
+        /* ── PAGE TITLE ── */
+        .page-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(22px, 5vw, 40px);
+            color: var(--white);
+            padding: clamp(12px, 3vw, 24px) 16px 0;
+        }
+
+        /* ── VIDEO GRID ── */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(300px, 90vw), 1fr));
+            gap: clamp(28px, 5vw, 60px);
+            padding: clamp(24px, 5vw, 48px) clamp(12px, 4vw, 40px);
+            justify-items: center;
+        }
+
+        .music-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 580px;
+        }
+
+        /* Responsive 16:9 iframe wrapper */
+        .video-wrap {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 28px rgba(0,0,0,0.35);
+        }
+
+        .video-wrap iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .music-item span {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(13px, 2.5vw, 20px);
+            color: white;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* ── SEARCH STATES ── */
+        .highlight {
+            background: #ffe066;
+            color: black;
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+
+        .matched {
+            outline: 4px solid white;
+            outline-offset: 5px;
+            border-radius: 10px;
+        }
+
+        .hidden-item { display: none; }
+
+        /* ── MOBILE HAMBURGER ── */
+        @media (max-width: 640px) {
+            .hamburger { display: flex; }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-toggle:checked ~ .nav-links { display: flex; }
+
+            .nav-toggle:checked ~ .hamburger .hamburger-icon span:nth-child(1) {
+                transform: translateY(7.5px) rotate(45deg);
+            }
+            .nav-toggle:checked ~ .hamburger .hamburger-icon span:nth-child(2) {
+                opacity: 0;
+            }
+            .nav-toggle:checked ~ .hamburger .hamburger-icon span:nth-child(3) {
+                transform: translateY(-7.5px) rotate(-45deg);
+            }
+
+            .nav-links a {
+                padding: 16px 24px;
+                border-top: 1px solid rgba(139,47,201,0.1);
+                text-align: left;
+                font-size: 17px;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── SAFE AREA (iPhone notch) ── */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <h1>Love For Music<br>and Creativity</h1>
+        <h2>Welcome everyone! Sharing my music memories.</h2>
+    </header>
+
+    <nav class="topnav">
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+        <label for="nav-toggle" class="hamburger" aria-label="Toggle navigation">
+            <span>Menu</span>
+            <span class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </label>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="images.html">Images</a>
+            <a href="music.html">Music</a>
+            <a href="performances.html">Performances</a>
+            <a href="footage.html">Footage</a>
+            <a href="other images.html">Other Images</a>
+        </div>
+    </nav>
+
+    <div class="search-area">
+        <input type="search" id="searchInput" placeholder="Search footage..." autocomplete="off">
+        <button id="searchBtn">Search</button>
+    </div>
+    <p id="noResult">No matches found.</p>
+
+    <h2 class="page-title">Footage</h2>
+
+    <div class="video-grid">
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/ELAlU3NBg2E?si=XtG22JR5Snm5tjKs" title="Aaliyah Romeo Must Die Premiere" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Aaliyah Romeo Must Die Premiere</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/Qz5TUiyjcFk?si=z8AJ68nr4cA378a8" title="DOUBLE Crystal Planet" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>DOUBLE Crystal Planet</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/L4UEbeJhttw?si=-1x3iVBEFZh6pBfa" title="JYP and RAIN Meets Lil' Kim" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>JYP and RAIN Meets Lil' Kim</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/8M5_XvhpS20?si=Ebvf46JLJZ8FzorD" title="Left Eye Home Footage" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Left Eye Home Footage</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/4XaSxlOQfD4?si=JhIf5PF1QdqFoAoS" title="Zeebra Special Interview, Vol. 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Zeebra Special Interview, Vol. 1</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/Do7D65g3FOo?si=mmeD7Ozui0eFwMhr" title="Crystal Kay Interviews Alicia Keys" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Crystal Kay Interviews Alicia Keys</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/L64JyksVWaI?si=jFgm_8KcdRN7FU71" title="SHINHWA Secret Room File" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>SHINHWA Secret Room File</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/J1CX-ClmVYU?si=GoFqJ3eYlY9uLmZ-" title="K.Michelle Meets Mary J. Blige" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>K.Michelle Meets Mary J. Blige</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/Fi3AKlcvMAA?si=241eqF0iDAkYw7z7" title="Mýa Creating an Independent Legacy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Mýa Creating an Independent Legacy</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/hwAQIXwyEJI?si=7fQhj58kwHXHdNvl" title="Ashanti Making Of Rock Wit U" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Ashanti Making Of Rock Wit U (Awww Baby)</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/VbqNt9bWTNk?si=81IBqM_-SG6mqf1B" title="BoA Debut" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>BoA Debut</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/xKQVa1jZyKE?si=oM4cGtXNMOC-1LzN" title="Full Of Harmony B-boy Park" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Full Of Harmony B-boy Park</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/VVL-9WEjyLY?si=5TXx7T3j7fr52Rpu" title="Hikaru Utada In A Bear Costume" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Hikaru Utada In A Bear Costume</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/g6qB53mMbmQ?si=bJT0xAWAIXwK3MOu" title="god Joon Park appeared in Janet Jackson's MV" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>god Joon Park appeared in Janet Jackson's MV</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/xSYVAaODHBI?si=I1PM9W0LhZbweB9P" title="TLC Interview on ALL" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>TLC Interview on ALL</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/uym2cQAoaxQ?si=ZAMj13pXNcfHSl3h" title="Blaque Interview In London, England" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Blaque Interview In London, England</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/DAaihJ3BVsM?si=owl14ampii5Jmm7T" title="Solè Promoting Her Album Skin Deep" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Solè Promoting Her Album "Skin Deep"</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/5NFidqCPnXs?si=RFgAMvmrYpBSWkZI" title="Dream Worldwide Interviews Koda Kumi" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Dream Worldwide Interviews Koda Kumi</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/GaEUkzPMTqk?si=-rRbsVNosYFWWCvc" title="Road For RAIN" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Road For RAIN</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/_p9VfORBIZ0?si=1OdHVPd6IoH8RmOO" title="Jon B. Interview With Flava TV" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Jon B. Interview With Flava TV</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/wrxL2EvVeHg?si=45oZfvQt06btCa10" title="Olivia Interview With GETOE TV" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Olivia Interview With GETOE TV</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/SA5Yjf_pMAA?si=lvxDm_m6sSXv0NJW" title="Ginuwine Interview On Budweiser Supper Fest" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Ginuwine Interview On Budweiser Supper Fest</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/bEDBA3kPKGo?si=O8GW7G82cd_zWGwp" title="Janet and Michael Jackson Writing Scream" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Janet and Michael Jackson Writing 'Scream'</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/-ArTLWwR7mk?si=Mf_BSnVZkqp74Oeb" title="Ann One Performance of Natural Woman" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>Ann One Performance of Natural Woman</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/bxJbCzPpCRI?si=7UC61_6yddmoY1kd" title="D'Angelo Voodoo Documentary" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <span>D'Angelo Voodoo Documentary</span>
+        </div>
+
+    </div><!-- /video-grid -->
+
+    <script>
+        var input    = document.getElementById('searchInput');
+        var btn      = document.getElementById('searchBtn');
+        var noResult = document.getElementById('noResult');
+        var items    = document.querySelectorAll('.music-item');
+
+        function clearAll() {
+            items.forEach(function(item) {
+                item.classList.remove('matched', 'hidden-item');
+                item.querySelectorAll('.highlight').forEach(function(el) {
+                    el.replaceWith(document.createTextNode(el.textContent));
+                });
+                item.normalize();
+            });
+            noResult.style.display = 'none';
+        }
+
+        function highlightNode(node, term) {
+            if (node.nodeType !== 3) return;
+            var idx = node.textContent.toLowerCase().indexOf(term);
+            if (idx === -1) return;
+            var span = document.createElement('span');
+            span.className = 'highlight';
+            span.textContent = node.textContent.slice(idx, idx + term.length);
+            var after = node.splitText(idx);
+            after.textContent = after.textContent.slice(term.length);
+            node.parentNode.insertBefore(span, after);
+        }
+
+        function doSearch() {
+            clearAll();
+            var term = input.value.trim().toLowerCase();
+            if (!term) return;
+
+            var firstMatch = null;
+
+            items.forEach(function(item) {
+                var name = item.querySelector('span').textContent.toLowerCase();
+                if (name.includes(term)) {
+                    item.classList.add('matched');
+                    var walker = document.createTreeWalker(item, NodeFilter.SHOW_TEXT);
+                    var nodes = [];
+                    while (walker.nextNode()) nodes.push(walker.currentNode);
+                    nodes.forEach(function(n) { highlightNode(n, term); });
+                    if (!firstMatch) firstMatch = item;
+                } else {
+                    item.classList.add('hidden-item');
+                }
+            });
+
+            if (firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                noResult.style.display = 'block';
+                setTimeout(function() { noResult.style.display = 'none'; }, 2500);
+            }
+        }
+
+        btn.addEventListener('click', doSearch);
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') doSearch();
+        });
+        input.addEventListener('input', function() {
+            if (input.value.trim() === '') clearAll();
+        });
+    </script>
+
+</body>
+</html>
