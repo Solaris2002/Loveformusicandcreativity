@@ -1,0 +1,493 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#8B2FC9">
+    <title>Performances – Love For Music and Creativity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --purple: oklch(0.592 0.249 0.584); --rose: oklch(0.459 0.187 3.815); --white: #fff; }
+        html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+        body {
+            background-color: oklch(0.284 0.109 3.907);
+            min-height: 100vh; font-family: 'Lora', Georgia, serif; padding-bottom: 60px;
+        }
+        .site-header { padding: clamp(24px,6vw,48px) 20px clamp(12px,3vw,24px); text-align: center; }
+        .site-header h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: clamp(26px,6.5vw,56px); color: var(--white); line-height: 1.15; text-shadow: 0 2px 24px rgba(0,0,0,0.3); }
+        .site-header h2 { font-family: 'Lora', Georgia, serif; font-style: italic; font-weight: 400; font-size: clamp(13px,3vw,22px); color: rgba(255,255,255,0.82); margin-top: 8px; }
+        .topnav { position: sticky; top: 0; z-index: 100; background: oklch(0.459 0.187 3.815); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+        .nav-toggle { display: none; }
+        .hamburger { display: none; width: 100%; padding: 16px 20px; background: none; border: none; cursor: pointer; align-items: center; justify-content: space-between; font-family: 'Playfair Display', serif; font-size: 18px; color: white; }
+        .hamburger-icon { display: flex; flex-direction: column; gap: 5px; }
+        .hamburger-icon span { display: block; width: 26px; height: 2.5px; background: white; border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; }
+        .nav-links a { display: block; color: white; text-align: center; padding: 18px 16px; text-decoration: none; font-size: clamp(13px,2vw,18px); font-family: 'Playfair Display', serif; font-weight: 700; white-space: nowrap; transition: background 0.2s, color 0.2s; }
+        .nav-links a:hover, .nav-links a:active { background-color: oklch(0.284 0.109 3.907); color: var(--white); }
+        .search-area { display: flex; justify-content: center; align-items: center; gap: 10px; padding: clamp(20px,4vw,36px) 16px clamp(12px,3vw,24px); flex-wrap: wrap; }
+        #searchInput { flex: 1; min-width: 0; max-width: 340px; padding: 12px 18px; font-size: 16px; font-family: 'Lora', serif; border: 4px solid pink; border-radius: 25px; background: white; color: black; outline: none; transition: box-shadow 0.2s; }
+        #searchInput:focus { box-shadow: 0 0 0 3px rgba(255,105,180,0.3); }
+        #searchInput::placeholder { color: lightgrey; }
+        #searchBtn { padding: 12px 24px; font-size: 16px; font-family: 'Playfair Display', serif; font-weight: 700; background: pink; color: oklch(0.459 0.187 3.815); border: none; border-radius: 25px; cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.1s; touch-action: manipulation; white-space: nowrap; }
+        #searchBtn:hover, #searchBtn:active { background-color: var(--rose); color: white; }
+        #searchBtn:active { transform: scale(0.96); }
+        #noResult { display: none; text-align: center; color: rgba(255,255,255,0.85); font-style: italic; font-size: 16px; padding: 0 16px 16px; }
+        .page-title { text-align: center; font-family: 'Playfair Display', serif; font-size: clamp(22px,5vw,40px); color: var(--white); padding: clamp(12px,3vw,24px) 16px 0; }
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px,90vw),1fr)); gap: clamp(28px,5vw,60px); padding: clamp(24px,5vw,48px) clamp(12px,4vw,40px); justify-items: center; }
+        .music-item { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; max-width: 580px; }
+
+        /* ── LAZY THUMBNAIL PLAYER ── */
+        .video-wrap { position: relative; width: 100%; padding-top: 56.25%; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 28px rgba(0,0,0,0.35); cursor: pointer; background: #000; }
+        .video-wrap img.thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: none; border-radius: 0; box-shadow: none; display: block; }
+        .video-wrap .play-btn { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+        .video-wrap .play-btn::after {
+            content: '';
+            width: clamp(48px,12vw,72px); height: clamp(48px,12vw,72px);
+            background: rgba(255,255,255,0.92) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23c00' d='M8 5v14l11-7z'/%3E%3C/svg%3E") no-repeat 55% 50% / 50%;
+            border-radius: 50%; box-shadow: 0 4px 20px rgba(0,0,0,0.5); transition: transform 0.15s;
+        }
+        .video-wrap:hover .play-btn::after { transform: scale(1.1); }
+        .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: none; }
+        .video-wrap.active img.thumb, .video-wrap.active .play-btn { display: none; }
+        .video-wrap.active iframe { display: block; }
+
+        .music-item span { font-family: 'Playfair Display', serif; font-size: clamp(13px,2.5vw,20px); color: white; text-align: center; line-height: 1.4; }
+        .highlight { background: #ffe066; color: black; border-radius: 3px; padding: 0 2px; }
+        .matched { outline: 4px solid white; outline-offset: 5px; border-radius: 10px; }
+        .hidden-item { display: none; }
+
+        @media (max-width: 640px) {
+            .hamburger { display: flex; }
+            .nav-links { display: none; flex-direction: column; width: 100%; }
+            .nav-toggle:checked ~ .nav-links { display: flex; }
+            .nav-toggle:checked ~ .hamburger .hamburger-icon span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+            .nav-toggle:checked ~ .hamburger .hamburger-icon span:nth-child(2) { opacity: 0; }
+            .nav-toggle:checked ~ .hamburger .hamburger-icon span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+            .nav-links a { padding: 16px 24px; border-top: 1px solid rgba(139,47,201,0.1); text-align: left; font-size: 17px; }
+            .video-grid { grid-template-columns: 1fr; }
+        }
+        @supports (padding-bottom: env(safe-area-inset-bottom)) { body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); } }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <h1>Love For Music<br>and Creativity</h1>
+        <h2>Welcome everyone! Sharing my music memories.</h2>
+    </header>
+
+    <nav class="topnav">
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+        <label for="nav-toggle" class="hamburger" aria-label="Toggle navigation">
+            <span>Menu</span>
+            <span class="hamburger-icon"><span></span><span></span><span></span></span>
+        </label>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="images.html">Images</a>
+            <a href="music.html">Music</a>
+            <a href="performances.html">Performances</a>
+            <a href="footage.html">Footage</a>
+            <a href="other images.html">Other Images</a>
+        </div>
+    </nav>
+
+    <div class="search-area">
+        <input type="search" id="searchInput" placeholder="Search performances..." autocomplete="off">
+        <button id="searchBtn">Search</button>
+    </div>
+    <p id="noResult">No matches found.</p>
+    <h2 class="page-title">Performances</h2>
+
+    <div class="video-grid">
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="84MPIMZpyYI">
+                <img class="thumb" src="https://img.youtube.com/vi/84MPIMZpyYI/hqdefault.jpg" alt="Aaliyah - 4 Page Letter Performance">
+                <div class="play-btn"></div>
+                <iframe title="Aaliyah - 4 Page Letter Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Aaliyah - 4 Page Letter Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="jur4iie7NpQ">
+                <img class="thumb" src="https://img.youtube.com/vi/jur4iie7NpQ/hqdefault.jpg" alt="DOUBLE ft. Full Of Harmony - Handle Performance">
+                <div class="play-btn"></div>
+                <iframe title="DOUBLE ft. Full Of Harmony - Handle Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>DOUBLE ft. Full Of Harmony - Handle Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="1Y5GgFQXPtU">
+                <img class="thumb" src="https://img.youtube.com/vi/1Y5GgFQXPtU/hqdefault.jpg" alt="Lil' Kim ft. Sisqo - How Many Licks Performance">
+                <div class="play-btn"></div>
+                <iframe title="Lil' Kim ft. Sisqo - How Many Licks Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Lil' Kim ft. Sisqo - How Many Licks Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="tX5t7JM61lM">
+                <img class="thumb" src="https://img.youtube.com/vi/tX5t7JM61lM/hqdefault.jpg" alt="SHINHWA - Wild Eyes Performance">
+                <div class="play-btn"></div>
+                <iframe title="SHINHWA - Wild Eyes Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>SHINHWA - Wild Eyes Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="r30kNSF3OYk">
+                <img class="thumb" src="https://img.youtube.com/vi/r30kNSF3OYk/hqdefault.jpg" alt="Mary J. Blige - Real Love Performance">
+                <div class="play-btn"></div>
+                <iframe title="Mary J. Blige - Real Love Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Mary J. Blige - Real Love Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="iRROXuBa7MU">
+                <img class="thumb" src="https://img.youtube.com/vi/iRROXuBa7MU/hqdefault.jpg" alt="Mya ft. Sisqo - It's All About Me Performance">
+                <div class="play-btn"></div>
+                <iframe title="Mya ft. Sisqo - It's All About Me Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Mya ft. Sisqo - It's All About Me Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="I9AgJv4bvyk">
+                <img class="thumb" src="https://img.youtube.com/vi/I9AgJv4bvyk/hqdefault.jpg" alt="Ashanti - Foolish Performance">
+                <div class="play-btn"></div>
+                <iframe title="Ashanti - Foolish Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Ashanti - Foolish Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="H8QWZt271O8">
+                <img class="thumb" src="https://img.youtube.com/vi/H8QWZt271O8/hqdefault.jpg" alt="BoA - My Name Performance">
+                <div class="play-btn"></div>
+                <iframe title="BoA - My Name Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>BoA - My Name Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="ljbAcG0q0k0">
+                <img class="thumb" src="https://img.youtube.com/vi/ljbAcG0q0k0/hqdefault.jpg" alt="Hikaru Utada - Time Limit Performance">
+                <div class="play-btn"></div>
+                <iframe title="Hikaru Utada - Time Limit Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Hikaru Utada - Time Limit Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="TMtcXyqG04k">
+                <img class="thumb" src="https://img.youtube.com/vi/TMtcXyqG04k/hqdefault.jpg" alt="god - Road Performance">
+                <div class="play-btn"></div>
+                <iframe title="god - Road Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>god - Road Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="VyfLER3Z0-Q">
+                <img class="thumb" src="https://img.youtube.com/vi/VyfLER3Z0-Q/hqdefault.jpg" alt="TLC - No Scrubs Performance">
+                <div class="play-btn"></div>
+                <iframe title="TLC - No Scrubs Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>TLC - No Scrubs Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="kQZWAw9GRSo">
+                <img class="thumb" src="https://img.youtube.com/vi/kQZWAw9GRSo/hqdefault.jpg" alt="Blaque - 808 Performance">
+                <div class="play-btn"></div>
+                <iframe title="Blaque - 808 Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Blaque - 808 Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="5ZdTaZcobAE">
+                <img class="thumb" src="https://img.youtube.com/vi/5ZdTaZcobAE/hqdefault.jpg" alt="Solè ft. Kandi and JT Money - 4, 5, 6 Performance">
+                <div class="play-btn"></div>
+                <iframe title="Solè ft. Kandi and JT Money - 4, 5, 6 Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Solè ft. Kandi and JT Money - 4, 5, 6 Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="O0rZpbdghQA">
+                <img class="thumb" src="https://img.youtube.com/vi/O0rZpbdghQA/hqdefault.jpg" alt="Koda Kumi - Shake It Performance">
+                <div class="play-btn"></div>
+                <iframe title="Koda Kumi - Shake It Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Koda Kumi - Shake It Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="rbCDMob4fVI">
+                <img class="thumb" src="https://img.youtube.com/vi/rbCDMob4fVI/hqdefault.jpg" alt="RAIN - Bad Man Performance">
+                <div class="play-btn"></div>
+                <iframe title="RAIN - Bad Man Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>RAIN - Bad Man Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="Vmn0oEtB76I">
+                <img class="thumb" src="https://img.youtube.com/vi/Vmn0oEtB76I/hqdefault.jpg" alt="J.ae - Like Yesterday Performance">
+                <div class="play-btn"></div>
+                <iframe title="J.ae - Like Yesterday Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>J.ae - Like Yesterday Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="GhNDfMiH0g4">
+                <img class="thumb" src="https://img.youtube.com/vi/GhNDfMiH0g4/hqdefault.jpg" alt="Jon B. - Whatcha Say Boo (I Do) Performance">
+                <div class="play-btn"></div>
+                <iframe title="Jon B. - Whatcha Say Boo (I Do) Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Jon B. - Whatcha Say Boo (I Do) Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="AktHg86Z9j8">
+                <img class="thumb" src="https://img.youtube.com/vi/AktHg86Z9j8/hqdefault.jpg" alt="Olivia - Bizounce Performance">
+                <div class="play-btn"></div>
+                <iframe title="Olivia - Bizounce Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Olivia - Bizounce Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="ouEGa8oZ5Jk">
+                <img class="thumb" src="https://img.youtube.com/vi/ouEGa8oZ5Jk/hqdefault.jpg" alt="Ginuwine - So Anxious Performance">
+                <div class="play-btn"></div>
+                <iframe title="Ginuwine - So Anxious Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Ginuwine - So Anxious Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="EcyMRYFGGm8">
+                <img class="thumb" src="https://img.youtube.com/vi/EcyMRYFGGm8/hqdefault.jpg" alt="Michael Jackson - You Rock My World Performance">
+                <div class="play-btn"></div>
+                <iframe title="Michael Jackson - You Rock My World Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Michael Jackson - You Rock My World Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="iibFkn-C5OI">
+                <img class="thumb" src="https://img.youtube.com/vi/iibFkn-C5OI/hqdefault.jpg" alt="Ann One - Memories Performance">
+                <div class="play-btn"></div>
+                <iframe title="Ann One - Memories Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Ann One - Memories Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="QcQO0hyo5eI">
+                <img class="thumb" src="https://img.youtube.com/vi/QcQO0hyo5eI/hqdefault.jpg" alt="D'Angelo - Brown Sugar Performance">
+                <div class="play-btn"></div>
+                <iframe title="D'Angelo - Brown Sugar Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>D'Angelo - Brown Sugar Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="VNARuiUMXhw">
+                <img class="thumb" src="https://img.youtube.com/vi/VNARuiUMXhw/hqdefault.jpg" alt="B2K - Uh Huh Performance">
+                <div class="play-btn"></div>
+                <iframe title="B2K - Uh Huh Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>B2K - Uh Huh Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="rjt-acYmkF0">
+                <img class="thumb" src="https://img.youtube.com/vi/rjt-acYmkF0/hqdefault.jpg" alt="Maxwell - Fortunate Performance">
+                <div class="play-btn"></div>
+                <iframe title="Maxwell - Fortunate Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Maxwell - Fortunate Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="Riai3DGWitw">
+                <img class="thumb" src="https://img.youtube.com/vi/Riai3DGWitw/hqdefault.jpg" alt="Wheesung - With Me Performance">
+                <div class="play-btn"></div>
+                <iframe title="Wheesung - With Me Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Wheesung - With Me Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="2mMDdUxt-m4">
+                <img class="thumb" src="https://img.youtube.com/vi/2mMDdUxt-m4/hqdefault.jpg" alt="Fly To The Sky - Condition Of My Heart">
+                <div class="play-btn"></div>
+                <iframe title="Fly To The Sky - Condition Of My Heart Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Fly To The Sky - Condition Of My Heart Performance</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="gwFeMoDqi80">
+                <img class="thumb" src="https://img.youtube.com/vi/gwFeMoDqi80/hqdefault.jpg" alt="Billy Crawford - Trackin' Performance">
+                <div class="play-btn"></div>
+                <iframe title="Billy Crawford- Trackin' Performance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Billy Crawford - Trackin' Performance</span>
+        </div>
+
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="oGQ_VnhFugc">
+                <img class="thumb" src="https://img.youtube.com/vi/oGQ_VnhFugc/hqdefault.jpg" alt="Janet Jackson - That's The Way Love Goes/If VMAs">
+                <div class="play-btn"></div>
+                <iframe title="Janet Jackson - That's The Way Love Goes/If VMAs" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Janet Jackson - That's The Way Love Goes / If Performance</span>
+        </div>
+        <div class="music-item">
+            <div class="video-wrap" data-id="3_lHajFHYFM">
+                <img class="thumb" src="https://img.youtube.com/vi/3_lHajFHYFM/hqdefault.jpg" alt="Changing Man - Ladies Man Performance">
+                <div class="play-btn"></div>
+                <iframe title="Changing Faces - Ladies Man" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Changing Faces - Ladies Man Performance</span>
+        </div>
+
+         <div class="music-item">
+            <div class="video-wrap" data-id="8GM7cgBVoJ4">
+                <img class="thumb" src="https://img.youtube.com/vi/8GM7cgBVoJ4/hqdefault.jpg" alt="Color Me Badd - Sexual Capacity Performance">
+                <div class="play-btn"></div>
+                <iframe title="Color Me Badd - Sexual Capacity" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Color Me Badd - Sexual Capacity Performance</span>
+        </div>  
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="aEp9nxd_ULw">
+                <img class="thumb" src="https://img.youtube.com/vi/aEp9nxd_ULw/hqdefault.jpg" alt="Amerie - Why Don't We Fall In Love">
+                <div class="play-btn"></div>
+                <iframe title="Amerie Performs 'Why Don't We Fall In Love' On Soul Train" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Amerie Performs 'Why Don't We Fall In Love' On Soul Train</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="DgEd2VAHvh8">
+                <img class="thumb" src="https://img.youtube.com/vi/DgEd2VAHvh8/hqdefault.jpg" alt="Jay Chou - Adorable Lady">
+                <div class="play-btn"></div>
+                <iframe title= "Jay Chou Adorable Lady Hong Kong Concert version 2014" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Jay Chou Adorable Lady Hong Kong Concert version 2014</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="quH0Iw-Fzjk">
+                <img class="thumb" src="https://img.youtube.com/vi/quH0Iw-Fzjk/hqdefault.jpg" alt="Jay Chou - Adorable Lady">
+                <div class="play-btn"></div>
+                <iframe title="Ophélie Winter Shame On U - Mes Meilleurs Amis France 2 1997" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Ophélie Winter "Shame On U"- Mes Meilleurs Amis France 2 1997</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="wn3SxxjYdfQ">
+                <img class="thumb" src="https://img.youtube.com/vi/wn3SxxjYdfQ/hqdefault.jpg" alt="Jay Chou - Adorable Lady">
+                <div class="play-btn"></div>
+                <iframe title="음악캠프 - Joosuk - Hate or like, 주석 - 싫거나 혹은 좋거나, Music Camp 20030111" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>음악캠프 - Joosuk - Hate or Love Me, 주석 - 싫거나 혹은 좋거나, Music Camp 20030111</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="uWnAnpejT6M">
+                <img class="thumb" src="https://img.youtube.com/vi/uWnAnpejT6M/hqdefault.jpg" alt="Jay Chou - Adorable Lady">
+                <div class="play-btn"></div>
+                <iframe title="3LW - I Do (Wanna Get Close To You) Live @ All That 2002" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>3LW - I Do (Wanna Get Close To You) Live @ All That 2002</span>
+        </div>
+
+        <div class="music-item">
+            <div class="video-wrap" data-id="r5zcs5gF3XE">
+                <img class="thumb" src="https://img.youtube.com/vi/r5zcs5gF3XE/hqdefault.jpg" alt="Jay Chou - Adorable Lady">
+                <div class="play-btn"></div>
+                <iframe title="Tweet - Oops (Oh My) (Live Jools Holland 2002)" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <span>Tweet - Oops (Oh My) (Live Jools Holland 2002) [HD]</span>
+        </div>
+    <script>
+        document.querySelectorAll('.video-wrap').forEach(function(wrap) {
+            wrap.addEventListener('click', function() {
+                if (wrap.classList.contains('active')) return;
+                wrap.querySelector('iframe').src = 'https://www.youtube.com/embed/' + wrap.dataset.id + '?autoplay=1&rel=0';
+                wrap.classList.add('active');
+            });
+        });
+
+        var input = document.getElementById('searchInput');
+        var btn = document.getElementById('searchBtn');
+        var noResult = document.getElementById('noResult');
+        var items = document.querySelectorAll('.music-item');
+
+        function clearAll() {
+            items.forEach(function(item) {
+                item.classList.remove('matched', 'hidden-item');
+                item.querySelectorAll('.highlight').forEach(function(el) { el.replaceWith(document.createTextNode(el.textContent)); });
+                item.normalize();
+            });
+            noResult.style.display = 'none';
+        }
+
+        function highlightNode(node, term) {
+            if (node.nodeType !== 3) return;
+            var idx = node.textContent.toLowerCase().indexOf(term);
+            if (idx === -1) return;
+            var span = document.createElement('span');
+            span.className = 'highlight';
+            span.textContent = node.textContent.slice(idx, idx + term.length);
+            var after = node.splitText(idx);
+            after.textContent = after.textContent.slice(term.length);
+            node.parentNode.insertBefore(span, after);
+        }
+
+        function doSearch() {
+            clearAll();
+            var term = input.value.trim().toLowerCase();
+            if (!term) return;
+            var firstMatch = null;
+            items.forEach(function(item) {
+                var name = item.querySelector('span').textContent.toLowerCase();
+                if (name.includes(term)) {
+                    item.classList.add('matched');
+                    var walker = document.createTreeWalker(item, NodeFilter.SHOW_TEXT);
+                    var nodes = [];
+                    while (walker.nextNode()) nodes.push(walker.currentNode);
+                    nodes.forEach(function(n) { highlightNode(n, term); });
+                    if (!firstMatch) firstMatch = item;
+                } else { item.classList.add('hidden-item'); }
+            });
+            if (firstMatch) { firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+            else { noResult.style.display = 'block'; setTimeout(function() { noResult.style.display = 'none'; }, 2500); }
+        }
+
+        btn.addEventListener('click', doSearch);
+        input.addEventListener('keydown', function(e) { if (e.key === 'Enter') doSearch(); });
+        input.addEventListener('input', function() { if (input.value.trim() === '') clearAll(); });
+    </script>
+
+</body>
+</html>
